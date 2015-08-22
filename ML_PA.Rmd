@@ -38,6 +38,7 @@ sdata <- data[-idx]
 
 Split data to training and testing data sets. We have enough data, so that split 70/30.
 ```{r cash=TRUE}
+library(caret)
 isTrain <- createDataPartition(sdata$classe, p=0.7, list=F)
 training <- sdata[isTrain,]
 testing <- sdata[-isTrain,]
