@@ -45,7 +45,7 @@ testing <- sdata[-isTrain,]
 ```
 
 Pridiction variable is factor variable, so that we will use classification tree to predict.
-```{r cash=True}
+```{r cash=TRUE}
 modFit <- train(classe ~ ., data=training, model="rpart")
 print(modFit$finalModel)
 ```
