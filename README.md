@@ -1,1 +1,1 @@
-Unfortunately I have no time to wait until HTML is ready. Sorry for that.
+Unfortunately I have no time to wait until HTML is ready, I have to leave for business trip. Sorry for that.
