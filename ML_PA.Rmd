@@ -1,0 +1,58 @@
+---
+title: "Prediction manner of doing exercise"
+date: "Saturday, August 22, 2015"
+---
+
+The porpose of this report is to build a model to predict manner of doing exercise. This is the "classe" variable in the training set (https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv.). Any of the other variables can be used to predict with.  
+More about data on http://groupware.les.inf.puc-rio.br/har.
+
+# Prediction model
+
+Load data and look at it.
+```{r cash=TRUE}
+data <- read.csv("pml-training.csv")
+dim(data)
+```
+There are many variables in the data set. Lets exclude variables which contains aggregation functions and coordinate in their names (to make the repost shorter we include only list of excluded variables). Also we exclude variables which have many NA values (or #DIV/0). Function with collect indexes to be excluded:
+```{r}
+exclIdx <- function(data_names)
+{
+  excl <- c("max", "min", "std", "avg", "var", "kurtosis", "skewness", 
+            "amplitude", "_x", "_y", "_z")
+  idx <- c(1:7)
+  n <- length(excl)
+  for (i in 1:n)
+  {
+    idx <- c(idx, grep(excl[i], data_names))
+  }
+  sort(idx)
+}
+```
+
+Take only used variables
+```{r cash=TRUE}
+dnames <- names(data)
+idx <- exclIdx(dnames)
+sdata <- data[-idx]
+```
+
+Split data to training and testing data sets. We have enough data, so that split 70/30.
+```{r cash=TRUE}
+isTrain <- createDataPartition(sdata$classe, p=0.7, list=F)
+training <- sdata[isTrain,]
+testing <- sdata[-isTrain,]
+```
+
+Pridiction variable is factor variable, so that we will use classification tree to predict.
+```{r cash=True}
+modFit <- train(classe ~ ., data=training, model="rpart")
+print(modFit$finalModel)
+```
+
+Check the model on testing set.
+```{r cash=TRUE}
+predClasse <- predict(modFit, newdata=testing)
+confusionMatrix(predClasse, testing$classe)
+```
+
+Accuracy is about 99%, which is high enough. Applying the model to 20 test cases (https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv) gives 100% correct predictions. Taking into account testing results and out-of-sample accurancy, we can make decision to use this model as a final model.
