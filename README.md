@@ -1,1 +1,1 @@
-Unfortunately I have no time to wait until HTML is ready, I have to leave for business trip. Sorry for that.
+# HMTL loaded a bit later after deadline, but it is build by Rmd file loaded before.
